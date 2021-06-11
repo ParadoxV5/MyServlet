@@ -72,8 +72,9 @@ public abstract class MyServlet extends HttpServlet implements java.util.EventLi
       See {@link ServletContext#getRequestDispatcher(String)}
     @param request
       See {@link RequestDispatcher#forward(ServletRequest, ServletResponse)}
-    @param response
-      ditto
+    @param response ditto
+    @throws ServletException ditto
+    @throws IOException ditto
   */
   protected void forward(String path, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     getServletContext().getRequestDispatcher(path).forward(request, response);
