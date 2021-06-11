@@ -5,11 +5,11 @@ import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 // Javadoc imports used by Java
 import javax.servlet.http.HttpServlet;
 import java.util.function.Supplier;
+import javax.servlet.http.HttpSession;
 // Javadoc imports not used by Java
 import javax.servlet.ServletContext;
 import javax.servlet.RequestDispatcher;
@@ -27,7 +27,7 @@ import javax.servlet.ServletResponse;
   @author ParadoxV5
 */
 public abstract class MyServlet extends HttpServlet implements java.util.EventListener {
-  private static final long serialVersionUID = 0;
+  private static final long serialVersionUID = 1;
   
   /**
     This method is equivalent to a backport of <a href="
@@ -49,21 +49,15 @@ public abstract class MyServlet extends HttpServlet implements java.util.EventLi
   }
   
   /**
-    Get the session using 
+    This invalidate the current {@link HttpSession session} if there is one.
+    <br>
+    This method is a convenience over having to null-check if there do, in fact, exists a session currently.
     @param request
-      The {@link HttpServletRequest} to query the session from
-    @param fresh
-      if {@code true}, {@link HttpSession#invalidate()} (reset) the current
-      session (if there is one) so the queried will be a new one
-    @return
-      {@link HttpServletRequest#getSession()}
+      The {@link HttpServletRequest} to query the current session from
   */
-  protected static HttpSession getSession(HttpServletRequest request, boolean fresh) {
-    if(fresh) {
-      HttpSession oldSession = request.getSession(false);
-      if(oldSession != null) oldSession.invalidate();
-    }
-    return request.getSession();
+  protected static void invalidateSession(HttpServletRequest request) {
+    HttpSession oldSession = request.getSession(false);
+    if(oldSession != null) oldSession.invalidate();
   }
   
   /**
