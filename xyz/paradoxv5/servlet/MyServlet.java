@@ -23,7 +23,7 @@ import javax.servlet.ServletResponse;
   This class also marks {@link #doGet(HttpServletRequest, HttpServletResponse)} and
   {@link #doPost(HttpServletRequest, HttpServletResponse)} {@code abstract} for its children.
   
-  @version 2021-06-09.1
+  @version 2021-06-11.0
   @author ParadoxV5
 */
 public abstract class MyServlet extends HttpServlet implements java.util.EventListener {
@@ -53,17 +53,17 @@ public abstract class MyServlet extends HttpServlet implements java.util.EventLi
     @param request
       The {@link HttpServletRequest} to query the session from
     @param fresh
-      if {@code true}, {@link HttpSession#invalidate()} (reset) the current session and query a new one
+      if {@code true}, {@link HttpSession#invalidate()} (reset) the current
+      session (if there is one) so the queried will be a new one
     @return
       {@link HttpServletRequest#getSession()}
   */
   protected static HttpSession getSession(HttpServletRequest request, boolean fresh) {
-    HttpSession session = request.getSession();
     if(fresh) {
-      session.invalidate();
-      session = request.getSession();
+      HttpSession oldSession = request.getSession(false);
+      if(oldSession != null) oldSession.invalidate();
     }
-    return session;
+    return request.getSession();
   }
   
   /**
