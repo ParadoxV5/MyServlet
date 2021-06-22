@@ -17,14 +17,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 /**
-  An abstract {@link HttpServlet} class I use to collect up some
-  repeated code I commonly run into while taking this Web Dev tutorial class.
+  My abstract {@link HttpServlet} class and the progenitor of the overall collection
   <p>
   This class also marks {@link #doGet(HttpServletRequest, HttpServletResponse)} and
   {@link #doPost(HttpServletRequest, HttpServletResponse)} {@code abstract} for its children.
   
   @version 2021-06-11.0
-  @author ParadoxV5
 */
 public abstract class MyServlet extends HttpServlet implements java.util.EventListener {
   private static final long serialVersionUID = 1;
