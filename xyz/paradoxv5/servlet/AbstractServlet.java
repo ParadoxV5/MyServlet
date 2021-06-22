@@ -22,10 +22,10 @@ import javax.servlet.ServletResponse;
   This class also marks {@link #doGet(HttpServletRequest, HttpServletResponse)} and
   {@link #doPost(HttpServletRequest, HttpServletResponse)} {@code abstract} for its children.
   
-  @version 2021-06-11.0
+  @version 2021-06-22.0
 */
-public abstract class MyServlet extends HttpServlet implements java.util.EventListener {
-  private static final long serialVersionUID = 1;
+public abstract class AbstractServlet extends HttpServlet implements java.util.EventListener {
+  private static final long serialVersionUID = 2;
   
   /**
     This method is equivalent to a backport of <a href="
