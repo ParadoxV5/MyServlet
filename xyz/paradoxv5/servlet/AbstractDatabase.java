@@ -1,15 +1,15 @@
 package xyz.paradoxv5.servlet;
 
-import java.sql.SQLException;
-import java.sql.Connection;
 import javax.sql.DataSource;
+
+import java.sql.SQLException;
 import javax.naming.NamingException;
 
 /**
   TODO: Docs
  * @param <E> currently unused
 */
-public abstract class AbstractDatabase<E extends Comparable<E>> {
+public abstract class AbstractDatabase<E> {
   protected final DataSource dataSource;
   
   /** TODO: Docs
@@ -20,7 +20,7 @@ public abstract class AbstractDatabase<E extends Comparable<E>> {
     dataSource = (DataSource)((new javax.naming.InitialContext()).lookup("java:/comp/env/" + resourceName));
   }
   
-  public synchronized Connection getConnection() throws SQLException {
+  public synchronized java.sql.Connection getConnection() throws SQLException {
     return dataSource.getConnection();
   }
 }
