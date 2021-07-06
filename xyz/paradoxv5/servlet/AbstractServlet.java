@@ -1,16 +1,15 @@
 package xyz.paradoxv5.servlet;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// Javadoc imports used by Java
-import javax.servlet.http.HttpServlet;
 import java.util.function.Supplier;
-import javax.servlet.http.HttpSession;
-// Javadoc imports not used by Java
+import java.io.IOException;
+import javax.servlet.ServletException;
+
+// Javadoc imports not used by Java code
 import javax.servlet.ServletContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
