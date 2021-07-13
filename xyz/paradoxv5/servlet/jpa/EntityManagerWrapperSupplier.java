@@ -9,19 +9,16 @@ import javax.persistence.Persistence;
 /**
   
 */
-public class EntityManagerSupplier implements Supplier<EntityManager>, AutoCloseable {
+public class EntityManagerWrapperSupplier implements Supplier<EntityManagerWrapper>, AutoCloseable {
   protected final EntityManagerFactory factory;
-  public EntityManagerSupplier(String persistenceUnitName) {
+  public EntityManagerWrapperSupplier(String persistenceUnitName) {
     factory = Persistence.createEntityManagerFactory(persistenceUnitName);
   }
   @Override public void close() {
     factory.close();
   }
   
-  @Override public EntityManager get() {
-    return factory.createEntityManager();
-  }
-  public EntityManagerWrapper getWrapped() {
-    return new EntityManagerWrapper(get());
+  @Override public EntityManagerWrapper get() {
+    return new EntityManagerWrapper(factory.createEntityManager());
   }
 }
