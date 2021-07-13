@@ -3,6 +3,8 @@ package xyz.paradoxv5.servlet.jpa;
 import xyz.paradoxv5.servlet.CRUD;
 
 import java.util.Set;
+import java.util.function.Supplier;
+
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 
@@ -11,8 +13,8 @@ import java.io.Serializable;
 */
 public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Serializable> implements CRUD<E> {
   protected final Class<E> e;
-  protected final EntityManagerWrapperSupplier entityManagerSupplier;
-  public AbstractEntityDB(Class<E> klass, EntityManagerWrapperSupplier entityManagerSupplier) {
+  protected final Supplier<EntityManagerWrapper> entityManagerSupplier;
+  public AbstractEntityDB(Class<E> klass, Supplier<EntityManagerWrapper> entityManagerSupplier) {
     this.e = klass;
     this.entityManagerSupplier = entityManagerSupplier;
   }
