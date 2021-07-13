@@ -30,22 +30,31 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
   
   protected abstract void add0(EntityManager entityManager, E entity) throws Exception;
   @Override public synchronized void add(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) {
+    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) { try {
       add0(entityManager.get(), entity);
-    }
+    } catch(Exception e) {
+      entityManager.rollback();
+      throw e;
+    } }
   }
   
   protected abstract void update0(EntityManager entityManager, E entity) throws Exception;
   @Override public synchronized void update(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) {
+    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) { try {
       update0(entityManager.get(), entity);
-    }
+    } catch(Exception e) {
+      entityManager.rollback();
+      throw e;
+    } }
   }
   
   protected abstract void remove0(EntityManager entityManager, E entity) throws Exception;
   @Override public synchronized void remove(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) {
+    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) { try {
       remove0(entityManager.get(), entity);
-    }
+    } catch(Exception e) {
+      entityManager.rollback();
+      throw e;
+    } }
   }
 }
