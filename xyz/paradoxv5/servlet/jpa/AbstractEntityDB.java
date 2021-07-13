@@ -23,10 +23,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
       return user;
     }
   }
-  
-  @Override public Set<E> getAll() {
-    return CRUD.throwUnsupportedOperationException();
-  }
+  @Override public abstract Set<E> getAll();
   
   protected abstract void add0(EntityManager entityManager, E entity) throws Exception;
   @Override public synchronized void add(E entity) throws Exception {
