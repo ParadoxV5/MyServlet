@@ -17,11 +17,7 @@ public class EntityManagerWrapper implements Supplier<EntityManager>, AutoClosea
   public EntityManagerWrapper(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
-  public EntityManagerWrapper(EntityManager entityManager, boolean transactioned) {
-    this(entityManager);
-    if(transactioned) beginTransaction();
-  }
-
+  
   @Override public EntityManager get() {
     return entityManager;
   }
