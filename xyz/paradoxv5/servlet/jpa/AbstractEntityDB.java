@@ -19,8 +19,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
   
   @Override public synchronized <K> E get(K primaryKey) {
     try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) {
-      E user = entityManager.get().find(e, primaryKey);
-      return user;
+      return entityManager.get().find(e, primaryKey);
     }
   }
   
