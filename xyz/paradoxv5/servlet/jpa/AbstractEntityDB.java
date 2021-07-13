@@ -23,7 +23,13 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
       return user;
     }
   }
-  @Override public abstract Set<E> getAll();
+  
+  public abstract String getAllQlString();
+  @Override public Set<E> getAll() {
+    try(EntityManagerWrapper entityManager = entityManagerSupplier.getWrapped()) {
+      return entityManager.get().createQuery(getAllQlString(), e).getResultStream().collect(java.util.stream.Collectors.toSet());
+    }
+  }
   
   protected abstract void add0(EntityManager entityManager, E entity) throws Exception;
   @Override public synchronized void add(E entity) throws Exception {
