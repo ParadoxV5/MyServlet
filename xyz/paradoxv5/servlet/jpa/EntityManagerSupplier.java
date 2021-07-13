@@ -9,10 +9,13 @@ import javax.persistence.Persistence;
 /**
   
 */
-public class EntityManagerSupplier implements Supplier<EntityManager> {
+public class EntityManagerSupplier implements Supplier<EntityManager>, AutoCloseable {
   protected final EntityManagerFactory factory;
   public EntityManagerSupplier(String persistenceUnitName) {
     factory = Persistence.createEntityManagerFactory(persistenceUnitName);
+  }
+  @Override public void close() {
+    factory.close();
   }
   
   @Override public EntityManager get() {
