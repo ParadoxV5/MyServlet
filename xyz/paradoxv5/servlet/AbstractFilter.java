@@ -44,6 +44,6 @@ public abstract class AbstractFilter extends HttpFilter {
   
   /** … */
   @Override public String toString() {
-    return String.format("%s<%s>]", getClass().getSimpleName(), getFilterName());
+    return String.format("%s<%s>", getClass().getSimpleName(), getFilterName());
   }
 }
