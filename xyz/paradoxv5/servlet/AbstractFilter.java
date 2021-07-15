@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-public abstract class AbstractFilter implements Filter, AutoCloseable {
+public abstract class AbstractFilter implements Filter {
   /** … */
   private FilterConfig filterConfig;
   /** @return {@link #filterConfig} */
@@ -18,11 +18,6 @@ public abstract class AbstractFilter implements Filter, AutoCloseable {
   @Override public void init(FilterConfig filterConfig) {
     this.filterConfig = filterConfig;
   }
-  
-  /** {@link #destroy()} */
-  @Override public void close() {}
-  /** @implSpec {@link #close()} */
-  @Override public final void destroy() { close(); }
   
   /**
     …
