@@ -26,7 +26,7 @@ public abstract class AbstractFilter extends HttpFilter {
     @throws IOException …
     @throws ServletException …
   */
-  protected void postFilter(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {}
+  protected void postProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {}
   
   /**
     @implSpec … …
@@ -39,7 +39,7 @@ public abstract class AbstractFilter extends HttpFilter {
     
     try { super.doFilter(httpRequest, httpResponse, chain); }
     // Any exception should be thrown *after* `postFilter`
-    finally { postFilter(httpRequest, httpResponse); }
+    finally { postProcess(httpRequest, httpResponse); }
   }
   
   /** … */
