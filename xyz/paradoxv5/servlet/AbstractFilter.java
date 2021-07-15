@@ -35,7 +35,7 @@ public abstract class AbstractFilter extends HttpFilter {
     HttpServletRequest httpRequest = (HttpServletRequest)request;
     HttpServletResponse httpResponse = (HttpServletResponse)response;
     
-    filter(httpRequest, httpResponse);
+    if(!filter(httpRequest, httpResponse)) return;
     
     try { super.doFilter(httpRequest, httpResponse, chain); }
     // Any exception should be thrown *after* `postFilter`
