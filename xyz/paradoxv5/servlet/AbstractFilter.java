@@ -1,24 +1,15 @@
 package xyz.paradoxv5.servlet;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-public abstract class AbstractFilter implements Filter {
-  /** … */
-  private FilterConfig filterConfig;
-  /** @return {@link #filterConfig} */
-  protected FilterConfig getFilterConfig() { return filterConfig; }
-  /**
-    @param filterConfig …
-  */
-  @Override public void init(FilterConfig filterConfig) {
-    this.filterConfig = filterConfig;
-  }
-  
+/** ́… */
+public abstract class AbstractFilter extends HttpFilter {
+  private static final long serialVersionUID = 0;
+
   /**
     …
     @param request …
@@ -46,13 +37,13 @@ public abstract class AbstractFilter implements Filter {
     
     filter(httpRequest, httpResponse);
     
-    try { chain.doFilter(httpRequest, httpResponse); }
+    try { super.doFilter(httpRequest, httpResponse, chain); }
     // Any exception should be thrown *after* `postFilter`
     finally { postFilter(httpRequest, httpResponse); }
   }
   
   /** … */
   @Override public String toString() {
-    return String.format("%s<%s>]", getClass().getSimpleName(), getFilterConfig().getFilterName());
+    return String.format("%s<%s>]", getClass().getSimpleName(), getFilterName());
   }
 }
