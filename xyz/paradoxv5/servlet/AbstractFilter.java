@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-/** ́… */
+/** … */
 public abstract class AbstractFilter extends HttpFilter {
   private static final long serialVersionUID = 0;
-
+  
   /**
     …
     @param request …
@@ -31,15 +31,11 @@ public abstract class AbstractFilter extends HttpFilter {
   /**
     @implSpec … …
   */
-  @Override public final void doFilter(javax.servlet.ServletRequest request, javax.servlet.ServletResponse response, javax.servlet.FilterChain chain) throws IOException, ServletException {
-    HttpServletRequest httpRequest = (HttpServletRequest)request;
-    HttpServletResponse httpResponse = (HttpServletResponse)response;
-    
-    if(!filter(httpRequest, httpResponse)) return;
-    
-    try { super.doFilter(httpRequest, httpResponse, chain); }
-    // Any exception should be thrown *after* `postFilter`
-    finally { postProcess(httpRequest, httpResponse); }
+  @Override public final void doFilter(HttpServletRequest request, HttpServletResponse response, javax.servlet.FilterChain chain) throws IOException, ServletException {
+    if(!filter(request, response)) return;
+    // Any exception should be thrown *after* `postProcess`
+    try { super.doFilter(request, response, chain); }
+    finally { postProcess(request, response); }
   }
   
   /** … */
