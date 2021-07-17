@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
   
 */
-public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Serializable> implements CRUD<E> {
+public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Serializable> implements CRUD<E, K> {
   protected final Class<E> e;
   protected final Supplier<EntityManagerWrapper> entityManagerSupplier;
   public AbstractEntityDB(Class<E> klass, Supplier<EntityManagerWrapper> entityManagerSupplier) {
@@ -19,7 +19,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     this.entityManagerSupplier = entityManagerSupplier;
   }
   
-  @Override public synchronized <K> E get(K primaryKey) {
+  @Override public synchronized E get(K primaryKey) {
     try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) {
       return entityManager.get().find(e, primaryKey);
     }

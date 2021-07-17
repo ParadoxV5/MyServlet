@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
   
 */
-public interface CRUD<E extends Serializable> {
-  public <K> E get(K primaryKey);
+public interface CRUD<E extends Serializable, K> {
+  public E get(K primaryKey);
   public Set<E> getAll() throws Exception;
   
   public void add(E object) throws Exception;

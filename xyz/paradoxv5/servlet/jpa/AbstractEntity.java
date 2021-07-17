@@ -17,7 +17,7 @@ public abstract class AbstractEntity<K extends Serializable> implements Serializ
     );
   }
   @Override public int hashCode() {
-    return Objects.hash(primaryKey());
+    return Objects.hashCode(primaryKey());
   }
   @Override public String toString() {
     return String.format("%s<%s>", getClass().getSimpleName(), primaryKey());
