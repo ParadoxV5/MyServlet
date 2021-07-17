@@ -15,6 +15,12 @@ public interface CRUD<E extends Serializable, K> {
   public void update(E object) throws Exception;
   public void remove(E object) throws Exception;
   
+  public default E getAndRemove(K primaryKey) throws Exception {
+    E object = get(primaryKey);
+    remove(object);
+    return object;
+  }
+  
   public static <E extends Serializable> Set<E> throwUnsupportedOperationException() throws UnsupportedOperationException {
     throw new UnsupportedOperationException();
   }
