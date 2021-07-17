@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
   <p>
   This wrapper {@code implements} {@code AutoCloseable} to {@linkplain #close() close the factory}
   for {@code try}-with-resources convenience.
+  
+  @version 1
 */
 public class EntityManagerFactoryWrapper implements java.util.function.Supplier<EntityManagerWrapper>, AutoCloseable {
   /** The wrapped {@code EntityManagerFactory}
