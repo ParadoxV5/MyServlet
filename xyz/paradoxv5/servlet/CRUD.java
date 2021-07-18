@@ -19,17 +19,21 @@ import java.util.Collection;
     The type of elements the implementing type CRUDs
   @param <K>
     The type of the elements’ ID (e.g. Primary Key), primarily for Read operations
+  @version
+    1.1
 */
 public interface CRUD<E extends Serializable, K> {
   /**
-    @param primaryKey
+    @param id
       the ID
+    @throws Exception
+      If a checked exception might throw
     @return
       the element of that key
     @see #getAll()
     @see #getAndRemove(Object)
   */
-  public E get(K primaryKey);
+  public E get(K id) throws Exception;
   /**
     @return
       A set of all elements managed by this CRUD type
@@ -44,39 +48,39 @@ public interface CRUD<E extends Serializable, K> {
   public Set<E> getAll() throws Exception;
   
   /**
-    @param object
+    @param element
       the element to add
     @throws Exception
       If a checked exception might throw
   */
-  public void add(E object) throws Exception;
+  public void add(E element) throws Exception;
   /**
-    @param object
+    @param element
       the element to update to
     @throws Exception
       If a checked exception might throw
     @implSpec
-      Implementations shall use the ID of the {@code object} parameter to determine the element to update to it.
+      Implementations shall use the ID of the {@code element} parameter to determine the element to update to it.
       Therefore, implementation optionally may {@code throw} if the given ID doesn’t currently exist,
       or simply redirect to {@link #add(Serializable)}.
   */
-  public void update(E object) throws Exception;
+  public void update(E element) throws Exception;
   /**
-    @param object
+    @param element
       the element to remove
     @throws Exception
       If a checked exception might throw
     @implSpec
-      Implementations shall use the ID of the {@code object} parameter to determine the element to remove.
+      Implementations shall use the ID of the {@code element} parameter to determine the element to remove.
       Implementations optionally may require additional synchronized fields in addition to the ID to match
       in order to ensure synchronization, and optionally may {@code throw} if no matches currently exist.
     @see
       #getAndRemove(Object)
   */
-  public void remove(E object) throws Exception;
+  public void remove(E element) throws Exception;
   
   /**
-    @param primaryKey
+    @param id
       the ID of the element to get and remove
     @return
       the element of that ID, now removed
@@ -88,9 +92,9 @@ public interface CRUD<E extends Serializable, K> {
       #get(Object)
       #remove(Serializable)
   */
-  public default E getAndRemove(K primaryKey) throws Exception {
-    E object = get(primaryKey);
-    remove(object);
-    return object;
+  public default E getAndRemove(K id) throws Exception {
+    E element = get(id);
+    remove(element);
+    return element;
   }
 }
