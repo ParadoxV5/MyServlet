@@ -51,6 +51,35 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
     this.rawMessage = rawMessage;
   }
   
+  /**
+    Log to the given {@code logger} with the {@link java.util.logging.Level logging level}
+    determined by the category (the code truncate the last two digits) of the {@link #httpCode}: <ul>
+      <li>5xx Server errors: Severe
+      <li>4xx Client errors: Warning
+      <li>2xx Informational responses: Info
+      <li>1xx Successful responses & 3xx Redirects: Config
+      <li>others (Not a standardized HTTP category): Fine
+    </ul>
+    
+    @param logger
+      the Logger
+  */
+  public void log(java.util.logging.Logger logger) {
+    switch(httpCode / 100) {
+      case 5: logger.severe(getMessage()); break;
+      case 4: logger.warning(getMessage()); break;
+      case 2: logger.info(getMessage()); break; // 
+      case 1: // 
+      case 3: // 
+        logger.config(getMessage());
+      break;
+      default: // 
+        logger.fine(getMessage());
+    }
+  }
+  /** {@link #log(java.util.logging.Logger) Log} to {@link AbstractServlet#LOGGER} */
+  public void log() { log(AbstractServlet.LOGGER); }
+  
   public void respond(HttpServletResponse response) throws IOException {
     String httpMessage = getCause().getLocalizedMessage();
     if(rawMessage != null)
