@@ -2,7 +2,7 @@ package xyz.paradoxv5.servlet;
 
 import java.util.Set;
 import java.io.Serializable;
-// JavaDoc imports
+// Javadoc imports not used by Java code
 import java.util.Collection;
 
 /**
