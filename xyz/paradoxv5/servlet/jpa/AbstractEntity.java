@@ -36,9 +36,12 @@ public abstract class AbstractEntity<K extends Serializable> implements Serializ
       Objects.equals(primaryKey(), ((AbstractEntity<?>)other).primaryKey())
     );
   }
-  /** @return the {@link Objects#hashCode(Object)} of {@link #primaryKey()} */
+  /** @return
+    the {@link Objects#hash(Object...)} of {@linkplain Class#getName() the instance’s class’s name}
+    and {@link #primaryKey()}
+  */
   @Override public int hashCode() {
-    return Objects.hashCode(primaryKey());
+    return Objects.hash(getClass().getName(), primaryKey());
   }
   /** @return
     a String of the format:
