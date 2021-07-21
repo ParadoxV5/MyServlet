@@ -75,7 +75,7 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   */
   public HTTPException(int httpCode, String rawMessage) {
     super(httpCodeToStringMessage(httpCode) + ' ' + rawMessage);
-    this.httpCode = (short)httpCode;
+    this.httpCode = httpCode;
     this.rawMessage = rawMessage;
   }
   /** Constructor with {@code null} {@link #rawMessage}
@@ -87,7 +87,7 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   */
   public HTTPException(int httpCode, Throwable cause) {
     super(httpCodeToStringMessage(httpCode), cause);
-    this.httpCode = (short)httpCode;
+    this.httpCode = httpCode;
     rawMessage = null;
   }
   /** Complete constructor
@@ -101,7 +101,7 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   */
   public HTTPException(int httpCode, String rawMessage, Throwable cause) {
     super(httpCodeToStringMessage(httpCode) + ' ' + rawMessage, cause);
-    this.httpCode = (short)httpCode;
+    this.httpCode = httpCode;
     this.rawMessage = rawMessage;
   }
   
