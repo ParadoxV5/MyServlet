@@ -148,10 +148,23 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
       {@code throw}ed an {@code IOException}
   */
   public void respond(HttpServletResponse response) throws IOException {
-    String httpMessage = getCause().getLocalizedMessage();
-    if(originalMessage != null)
-      httpMessage = originalMessage + '\n' + httpMessage;
-    response.sendError(httpCode, httpMessage);
+    Throwable cause = getCause();
+    if(cause != null) {
+      String causeMessage = cause.getLocalizedMessage();
+      if(causeMessage != null) {
+        if(originalMessage == null) {
+          response.sendError(httpCode, causeMessage);
+        } else {
+          response.sendError(httpCode, originalMessage + '\n' + causeMessage);
+        }
+        return;
+      }
+    }
+    if(originalMessage == null) {
+      response.sendError(httpCode);
+    } else {
+      response.sendError(httpCode, originalMessage);
+    }
   }
   
   /** @return Bitwise XOR of {@link #httpCode} and {@link #originalMessage}’s {@link Objects#hashCode} */
