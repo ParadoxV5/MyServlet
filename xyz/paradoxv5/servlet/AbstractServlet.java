@@ -5,7 +5,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.logging.Logger;
 import java.util.function.Supplier;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -21,10 +23,13 @@ import javax.servlet.ServletResponse;
   This class also marks {@link #doGet(HttpServletRequest, HttpServletResponse)} and
   {@link #doPost(HttpServletRequest, HttpServletResponse)} {@code abstract} for its children.
   
-  @version 2021-06-22.0
+  @version 2.222…
 */
 public abstract class AbstractServlet extends HttpServlet implements java.util.EventListener {
   private static final long serialVersionUID = 2;
+  
+  /** {@link Logger#getLogger(String) Logger of the name} {@code xyz.paradoxv5.servlet} (the package name, hardcoded) */
+  public static final Logger LOGGER = Logger.getLogger("xyz.paradoxv5.servlet");
   
   /**
     This method is equivalent to a backport of <a href="
