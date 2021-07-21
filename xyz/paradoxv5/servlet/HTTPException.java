@@ -10,10 +10,10 @@ import java.io.IOException;
     parameter or configure it with {@link Exception#initCause(Throwable)}
   
   @version
-    1.001
+    1.01
   @implSpec
     The {@linkplain #getMessage() error message} of instances, initialized via {@code super}
-    constructor calls, is “{@link #httpCodeToStringMessage(int) <httpCode>}”, or if an additional
+    constructor calls, is “{@link #httpCodeToStringMessage(int) &lt;httpCode>}”, or if an additional
     {@link #originalMessage message} is supplied in the constructor call, it followed by “{@link #originalMessage  originalMessage}”
   
   @see #HTTPException(int)
