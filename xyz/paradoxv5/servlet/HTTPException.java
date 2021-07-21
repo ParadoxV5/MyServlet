@@ -14,7 +14,7 @@ import java.io.IOException;
   @implSpec
     The {@linkplain #getMessage() error message} of instances, initialized via {@code super}
     constructor calls, is “{@link #httpCodeToStringMessage(int) <httpCode>}”, or if an additional
-    {@link #rawMessage message} is supplied in the constructor call, it followed by “{@link #rawMessage  rawMessage}”
+    {@link #originalMessage message} is supplied in the constructor call, it followed by “{@link #originalMessage  originalMessage}”
   
   @see #HTTPException(int)
   @see #HTTPException(int, String)
@@ -45,16 +45,16 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   }
   
   /** The original message fed in to the constructor
-    @see #getRawMessage()
+    @see #getOriginalMessage()
     @see HTTPException
     @see #httpCodeToStringMessage(int)
     @see #getMessage()
   */
-  protected final String rawMessage;
-  public final String getRawMessage() { return rawMessage; }
+  protected final String originalMessage;
+  public final String getOriginalMessage() { return originalMessage; }
   
   /**
-    Constructor with {@code null} {@link #rawMessage} and no
+    Constructor with {@code null} {@link #originalMessage} and no
     {@link #getCause() cause} {@link #initCause(Throwable) initialized}
     
     @param httpCode
@@ -64,21 +64,21 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   public HTTPException(int httpCode) {
     super(httpCodeToStringMessage(httpCode));
     this.httpCode = httpCode;
-    rawMessage = null;
+    originalMessage = null;
   }
   /** Constructor with no {@link #getCause() cause} {@link #initCause(Throwable) initialized}
     @param httpCode
       {@link #httpCode}
-    @param rawMessage
-     {@link #rawMessage}
+    @param originalMessage
+     {@link #originalMessage}
     @see HTTPException
   */
-  public HTTPException(int httpCode, String rawMessage) {
-    super(httpCodeToStringMessage(httpCode) + ' ' + rawMessage);
+  public HTTPException(int httpCode, String originalMessage) {
+    super(httpCodeToStringMessage(httpCode) + ' ' + originalMessage);
     this.httpCode = httpCode;
-    this.rawMessage = rawMessage;
+    this.originalMessage = originalMessage;
   }
-  /** Constructor with {@code null} {@link #rawMessage}
+  /** Constructor with {@code null} {@link #originalMessage}
     @param httpCode
       {@link #httpCode}
     @param cause
@@ -88,21 +88,21 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   public HTTPException(int httpCode, Throwable cause) {
     super(httpCodeToStringMessage(httpCode), cause);
     this.httpCode = httpCode;
-    rawMessage = null;
+    originalMessage = null;
   }
   /** Complete constructor
     @param httpCode
       {@link #httpCode}
-    @param rawMessage
-      {@link #rawMessage}
+    @param originalMessage
+      {@link #originalMessage}
     @param cause
       the {@link #getCause() cause} to {@link #initCause(Throwable) initialize}
     @see HTTPException
   */
-  public HTTPException(int httpCode, String rawMessage, Throwable cause) {
-    super(httpCodeToStringMessage(httpCode) + ' ' + rawMessage, cause);
+  public HTTPException(int httpCode, String originalMessage, Throwable cause) {
+    super(httpCodeToStringMessage(httpCode) + ' ' + originalMessage, cause);
     this.httpCode = httpCode;
-    this.rawMessage = rawMessage;
+    this.originalMessage = originalMessage;
   }
   
   /**
@@ -138,7 +138,7 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
     {@linkplain HttpServletResponse#sendError(int, String) Respond an “error”}
     (regardless of {@link #httpCode} category) to the given {@code response};
     The {@code sc} is (of course) {@link #httpCode} and the {@code msg} is, if any
-    {@link #rawMessage} and the {@link #getCause()}’s
+    {@link #originalMessage} and the {@link #getCause()}’s
     {@link Throwable#getLocalizedMessage() getLocalizedMessage()} each on their own line.
     
     @param response
@@ -149,14 +149,14 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   */
   public void respond(HttpServletResponse response) throws IOException {
     String httpMessage = getCause().getLocalizedMessage();
-    if(rawMessage != null)
-      httpMessage = rawMessage + '\n' + httpMessage;
+    if(originalMessage != null)
+      httpMessage = originalMessage + '\n' + httpMessage;
     response.sendError(httpCode, httpMessage);
   }
   
-  /** @return Bitwise XOR of {@link #httpCode} and {@link #rawMessage}’s {@link Objects#hashCode} */
+  /** @return Bitwise XOR of {@link #httpCode} and {@link #originalMessage}’s {@link Objects#hashCode} */
   @Override public int hashCode() {
-    return httpCode ^ Objects.hashCode(rawMessage);
+    return httpCode ^ Objects.hashCode(originalMessage);
   }
   /** @return a {@link Integer#compare(int, int)} of {@code this} and {@code other}’s {@link #httpCode}s */
   @Override public int compareTo(HTTPException other) {
