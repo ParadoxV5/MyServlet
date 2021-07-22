@@ -25,6 +25,8 @@ public class EntityManagerWrapper implements Supplier<EntityManager>, AutoClosea
     @see #close()
   */
   protected final EntityManager entityManager;
+  /** @return {@link #entityManager} */
+  @Override public final EntityManager get() { return entityManager; }
   
   /**
     Takes in the {@code entityManager} to wrap and starts its
@@ -38,8 +40,6 @@ public class EntityManagerWrapper implements Supplier<EntityManager>, AutoClosea
     entityManager.getTransaction().begin();
   }
   
-  /** @return {@link #entityManager} */
-  @Override public EntityManager get() { return entityManager; }
   
   /**
     {@linkplain EntityTransaction#commit() Commit} the current
