@@ -40,10 +40,10 @@ public class EntityManagerWrapper implements Supplier<EntityManager>, AutoClosea
     entityManager.getTransaction().begin();
   }
   
-  
   /**
     {@linkplain EntityTransaction#commit() Commit} the current
-    {@linkplain EntityManager#getTransaction() transaction}
+    {@linkplain EntityManager#getTransaction() transaction} and
+    {@linkplain EntityTransaction#begin() begins} a new one
     
     @see #entityManager
   */
@@ -53,23 +53,27 @@ public class EntityManagerWrapper implements Supplier<EntityManager>, AutoClosea
       rollback();
       throw e;
     }
+    entityManager.getTransaction().begin();
   }
   /**
     {@linkplain EntityTransaction#rollback() Rollback} the current
-    {@linkplain EntityManager#getTransaction() transaction}
+    {@linkplain EntityManager#getTransaction() transaction} and
+    {@linkplain EntityTransaction#begin() begins} a new one
     
     @see #entityManager
   */
   public void rollback() {
-    entityManager.getTransaction().rollback();
+    try { entityManager.getTransaction().rollback(); }
+    finally { entityManager.getTransaction().begin(); }
   }
   
   /**
-    {@link #commit()} and then
+    {@linkplain EntityTransaction#commit() Commit} the current
+    {@linkplain EntityManager#getTransaction() transaction} and then
     {@linkplain EntityManager#close() close} the {@link #entityManager}
   */
   @Override public void close() {
-    commit();
+    entityManager.getTransaction().commit();
     entityManager.close();
   }
 }
