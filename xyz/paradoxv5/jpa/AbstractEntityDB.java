@@ -1,6 +1,6 @@
-package xyz.paradoxv5.servlet.jpa;
+package xyz.paradoxv5.jpa;
 
-import xyz.paradoxv5.servlet.CRUD;
+import xyz.paradoxv5.CRUD;
 
 import java.util.Set;
 import java.util.function.Supplier;

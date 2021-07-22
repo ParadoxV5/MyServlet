@@ -1,4 +1,4 @@
-package xyz.paradoxv5.servlet.jpa;
+package xyz.paradoxv5.jpa;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

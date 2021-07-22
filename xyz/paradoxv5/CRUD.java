@@ -1,4 +1,4 @@
-package xyz.paradoxv5.servlet;
+package xyz.paradoxv5;
 
 import java.util.Set;
 import java.io.Serializable;
