@@ -25,10 +25,10 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     }
   }
   
-  public abstract String getAllQlString();
+  public abstract String getQlforGetAll();
   @Override public Set<E> getAll() {
     try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) {
-      return entityManager.get().createQuery(getAllQlString(), e).getResultStream().collect(java.util.stream.Collectors.toSet());
+      return entityManager.get().createQuery(getQlforGetAll(), e).getResultStream().collect(java.util.stream.Collectors.toSet());
     }
   }
   
