@@ -6,14 +6,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
   A key-value pair of a {@link #accept(Object, byte[]) hashing operation}’s
   records, where the {@link #getKey() key} is for identification and the
-  {@code byte[]} {@link #getValue() value} the resulting hash
+  {@link #getValue() value} the resulting hash
   
   @param <K> The type of the key
   @param <T> The type of the object that was / will be hashed
-  @see #accept(Object, byte[])
+  @param <H> The type of the resulting hash data
 */
-public interface HashEntry<K, T> extends
-  Map.Entry<K, byte[]>, Supplier<byte[]>,
+public interface HashEntry<K, T, H> extends
+  Map.Entry<K, H>, Supplier<H>,
   BiConsumer<T, byte[]>, Consumer<T>,
   java.io.Serializable
 {
@@ -21,7 +21,7 @@ public interface HashEntry<K, T> extends
     Hash, with some algorithm from the implementation, the supplied
     {@code object} with the preconfigured variable {@link #getSalt() salt}
     and optionally the constant {@link #getKey()}, and
-    {@linkplain #setValue(byte[]) store the resulting hashed data}.
+    {@linkplain #setValue(Object) store the resulting hashed data}.
     
     @param object
       the object to hash and store
@@ -46,11 +46,11 @@ public interface HashEntry<K, T> extends
   @Override default void accept(T object) { accept(object, getSalt()); }
   
   /** Alias of {@link #getValue()} */
-  @Override default byte[] get() { return getValue(); }
+  @Override default H get() { return getValue(); }
   /** @return The hashed data
-    @see #setValue(byte[])
+    @see #setValue(Object)
   */
-  @Override byte[] getValue();
+  @Override H getValue();
   /** Set the hash data directly
     @param hash the hash data
     @return
@@ -60,7 +60,7 @@ public interface HashEntry<K, T> extends
     @see #accept(Object, byte[])
     @see #getValue()
   */
-  @Override byte[] setValue(byte[] hash);
+  @Override H setValue(H hash);
   
   /** @return the salt data associated with the last hashing operation.
     @apiNote
