@@ -1,18 +1,18 @@
 package xyz.paradoxv5.hash;
 import java.security.MessageDigest;
-
-import java.util.Scanner;
-
 import java.util.Base64;
+import java.util.Base64.Encoder;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.Scanner;
 
 /**
   {@link HashEntry} that use {@link MessageDigest SHA-256} &
-  {@link Base64} to hash-transform from Strings to Strings
+  {@link Base64}-{@linkplain Encoder#withoutPadding() no-padding (‘=’)}
+  to hash-transform from Strings to Strings
   
   @param <K>
     The type of the HashEntry key
-  @version 1.01
+  @version 1.1
 */
 public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
   /**
@@ -37,8 +37,12 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
   */
   static MessageDigest DIGEST = getDigest();
   
-  /** A persistent constant reference to the Basic Base64 encoder */
-  static Base64.Encoder BASE64ENCODER = Base64.getEncoder();
+  /**
+    A persistent constant reference to the Basic
+    {@linkplain Encoder#withoutPadding() no-padding (‘=’)}
+    Base64 encoder
+  */
+  static Encoder BASE64ENCODER = Base64.getEncoder().withoutPadding();
   /** A persistent constant reference to the Basic Base64 decoder */
   static Base64.Decoder BASE64DECODER = Base64.getDecoder();
   
@@ -83,17 +87,18 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
     @see S256B64HashEntry
       Interface Javadoc
     @apiNote
-      Returns the {@linkplain #BASE64ENCODER Base64-encoded String}
-      of {@link #digest(String, byte[])}.
+      Returns the {@linkplain #BASE64ENCODER Base64-encoded},
+      {@linkplain Encoder#withoutPadding() no padding}
+      String of {@link #digest(String, byte[])}.
   */
   static String hash(String string, byte[] salt) {
     return BASE64ENCODER.encodeToString(digest(string, salt));
   }
   
   /** @apiNote
-    As stated in the {@linkplain S256B64HashEntry Interface Javadoc},
-    The algorithm is {@link MessageDigest SHA-256} (provided by
-    {@link #digest(String, byte[])}) + {@link #BASE64ENCODER Base64}
+    As stated in the {@linkplain S256B64HashEntry Interface Javadoc}, the algorithm
+    is {@link MessageDigest SHA-256} (provided by {@link #digest(String, byte[])}) +
+    {@link #BASE64ENCODER Base64}-{@linkplain Encoder#withoutPadding() no-padding}
     (provided by {@link #hash(String, byte[])}).
   */
   @Override default void accept(String string, byte[] salt) {
