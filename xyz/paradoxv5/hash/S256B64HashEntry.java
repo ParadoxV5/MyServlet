@@ -95,11 +95,16 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
     return BASE64ENCODER.encodeToString(digest(string, salt));
   }
   
-  /** @apiNote
-    As stated in the {@linkplain S256B64HashEntry Interface Javadoc}, the algorithm
-    is {@link MessageDigest SHA-256} (provided by {@link #digest(String, byte[])}) +
-    {@link #BASE64ENCODER Base64}-{@linkplain Encoder#withoutPadding() no-padding}
-    (provided by {@link #hash(String, byte[])}).
+  /**
+    @apiNote
+      As stated in the {@linkplain S256B64HashEntry Interface Javadoc}, the algorithm
+      is {@link MessageDigest SHA-256} (provided by {@link #digest(String, byte[])}) +
+      {@link #BASE64ENCODER Base64}-{@linkplain Encoder#withoutPadding() no-padding}
+      (provided by {@link #hash(String, byte[])}).
+    @implNote
+      Note that, as an {@code interface}, this does <strong>not</strong> ship
+      any implementation to track the {@code salt} for {@link #getSalt()} and
+      thus still need to be implemented by subclasses.
   */
   @Override default void accept(String string, byte[] salt) {
     setValue(hash(string, salt));
