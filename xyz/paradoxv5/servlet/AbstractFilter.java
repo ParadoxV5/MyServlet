@@ -53,7 +53,7 @@ public abstract class AbstractFilter extends HttpFilter {
   protected void postProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {}
   
   /**
-    @implSpec <ol>
+    @apiNote <ol>
       <li>
         Call {@link #filter(HttpServletRequest, HttpServletResponse)}, {@code return} if it returns {@code false}
         (or re{@code throw} any of its exceptions)

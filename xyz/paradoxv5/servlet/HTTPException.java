@@ -11,7 +11,7 @@ import java.io.IOException;
   
   @version
     1.01
-  @implSpec
+  @apiNote
     The {@linkplain #getMessage() error message} of instances, initialized via {@code super}
     constructor calls, is “{@link #httpCodeToStringMessage(int) &lt;httpCode>}”, or if an additional
     {@link #originalMessage message} is supplied in the constructor call, it followed by “{@link #originalMessage  originalMessage}”
