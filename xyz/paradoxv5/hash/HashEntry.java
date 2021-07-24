@@ -12,7 +12,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
   @param <T> The type of the object that was / will be hashed
   @see #accept(Object, byte[])
 */
-public interface SimpleHashEntry<K, T> extends
+public interface HashEntry<K, T> extends
   Map.Entry<K, byte[]>, Supplier<byte[]>,
   BiConsumer<T, byte[]>, Consumer<T>,
   java.io.Serializable
