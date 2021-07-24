@@ -9,7 +9,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
   
   @param <K>
     The type of the HashEntry key
-  @version 1
+  @version 1.01
 */
 public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
   /**
@@ -40,16 +40,25 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
   static Base64.Decoder BASE64DECODER = Base64.getDecoder();
   
   /**
-    {@linkplain MessageDigest#reset() Reset} the {@link #DIGEST},
-    {@linkplain MessageDigest#update(byte[]) feed} in first the {@code salt}
-    then the {@link #UTF_8} {@linkplain String#getBytes() bytes} of
-    {@code string}, and finally {@code return} the
-    {@linkplain MessageDigest#digest(byte[]) result}.
+    [API] Generate the hash data before the {@link Base64} part,
+    used by {@link #hash(String, byte[])} which is
+    used by {@link #accept(Object, byte[])}
     
-    @param string the string
-    @param salt the salt
-    @return the resulting hash data
-    @see #accept(Object, byte[])
+    @param string
+      the string
+    @param salt
+      the {@link #getSalt() salt}
+    @return
+      the resulting hash data before {@linkplain #BASE64ENCODER Base64 encoding}
+    @see S256B64HashEntry
+      Interface Javadoc
+    
+    @apiNote
+      {@linkplain MessageDigest#reset() Reset} the {@link #DIGEST},
+      {@linkplain MessageDigest#update(byte[]) feed} in first the {@code salt}
+      then the {@link #UTF_8} {@linkplain String#getBytes() bytes} of
+      {@code string}, and finally {@code return} the
+      {@linkplain MessageDigest#digest(byte[]) result}.
   */
   static byte[] digest(String string, byte[] salt) {
     DIGEST.reset();
@@ -58,13 +67,34 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
       string.getBytes(UTF_8)
     );
   }
+  /**
+    [API] Generate the hash data of the given parameters,
+    used by {@link #accept(Object, byte[])}
+    
+    @param
+      string the string
+    @param
+      salt the salt
+    @return
+      the hash data
+    @see S256B64HashEntry
+      Interface Javadoc
+    @apiNote
+      Returns the {@linkplain #BASE64ENCODER Base64-encoded String}
+      of {@link #digest(String, byte[])}.
+  */
+  static String hash(String string, byte[] salt) {
+    return BASE64ENCODER.encodeToString(digest(string, salt));
+  }
+  
   /** @apiNote
     As stated in the {@linkplain S256B64HashEntry Interface Javadoc},
     The algorithm is {@link MessageDigest SHA-256} (provided by
-    {@link #digest(String, byte[])}) + {@link #BASE64ENCODER Base64}.
+    {@link #digest(String, byte[])}) + {@link #BASE64ENCODER Base64}
+    (provided by {@link #hash(String, byte[])}).
   */
   @Override default void accept(String string, byte[] salt) {
-    setValue(BASE64ENCODER.encodeToString(digest(string, salt)));
+    setValue(hash(string, salt));
   }
   
   /** Check if this entry matches the given {@code string}.
