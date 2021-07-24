@@ -12,7 +12,7 @@ import java.util.stream.*;
   @param <K>
     The type of the entity’ primary key (“ID”), for {@link #get(Serializable)}
   @apiNote
-    This superclass uses {@link EntityManagerWrapper}s (supplied by {@link #entityManagerSupplier} which is
+    This superclass uses {@link EntityManagerWrapper}s (supplied by {@link #emWrapperSupplier} which is
     initialized from {@link #AbstractEntityDB(Class, String, Supplier) the constructor}) to manage transactions
   @version
     1.1
@@ -23,20 +23,20 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
   /** The QL string for {@link #getAll()} */
   protected final String ql_getAll;
   /** The supplier that provides the {@code EntityManagerWrapper}s */
-  protected final Supplier<EntityManagerWrapper> entityManagerSupplier;
+  protected final Supplier<EntityManagerWrapper> emWrapperSupplier;
   /** {@link AbstractEntityDB} constructor
-    @param klass {@link #e}
+    @param e {@link #e}
     @param ql_getAll {@link #ql_getAll}
-    @param entityManagerSupplier {@link #entityManagerSupplier}
+    @param emWrapperSupplier {@link #emWrapperSupplier}
   */
-  public AbstractEntityDB(Class<E> klass, String ql_getAll, Supplier<EntityManagerWrapper> entityManagerSupplier) {
-    this.e = klass;
+  public AbstractEntityDB(Class<E> e, String ql_getAll, Supplier<EntityManagerWrapper> emWrapperSupplier) {
+    this.e = e;
     this.ql_getAll = ql_getAll;
-    this.entityManagerSupplier = entityManagerSupplier;
+    this.emWrapperSupplier = emWrapperSupplier;
   }
   
   @Override public synchronized E get(K primaryKey) {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) {
+    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) {
       return entityManager.get().find(e, primaryKey);
     }
   }
@@ -48,7 +48,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@linkplain Collectors#toSet() set}.
   */
   @Override public java.util.Set<E> getAll() {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) {
+    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) {
       return entityManager.get().createQuery(ql_getAll, e).getResultStream().collect(Collectors.toSet());
     }
   }
@@ -65,7 +65,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #add0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void add(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) { try {
+    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
       add0(entityManager.get(), entity);
     } catch(Exception e) {
       entityManager.rollback();
@@ -85,7 +85,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #update0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void update(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) { try {
+    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
       update0(entityManager.get(), entity);
     } catch(Exception e) {
       entityManager.rollback();
@@ -105,7 +105,7 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #remove0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void remove(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) { try {
+    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
       remove0(entityManager.get(), entity);
     } catch(Exception e) {
       entityManager.rollback();
