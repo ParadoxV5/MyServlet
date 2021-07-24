@@ -13,21 +13,25 @@ import java.util.stream.*;
     The type of the entity’ primary key (“ID”), for {@link #get(Serializable)}
   @apiNote
     This superclass uses {@link EntityManagerWrapper}s (supplied by {@link #entityManagerSupplier} which is
-    initialized from {@link #AbstractEntityDB(Class, Supplier) the constructor}) to manage transactions
+    initialized from {@link #AbstractEntityDB(Class, String, Supplier) the constructor}) to manage transactions
   @version
-    1.01
+    1.1
 */
 public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Serializable> implements CRUD<E, K> {
   /** The persistent constant holding {@code <E>}’s class, as compiling discards type variables */
   protected final Class<E> e;
+  /** The QL string for {@link #getAll()} */
+  protected final String ql_getAll;
   /** The supplier that provides the {@code EntityManagerWrapper}s */
   protected final Supplier<EntityManagerWrapper> entityManagerSupplier;
   /** {@link AbstractEntityDB} constructor
     @param klass {@link #e}
+    @param ql_getAll {@link #ql_getAll}
     @param entityManagerSupplier {@link #entityManagerSupplier}
   */
-  public AbstractEntityDB(Class<E> klass, Supplier<EntityManagerWrapper> entityManagerSupplier) {
+  public AbstractEntityDB(Class<E> klass, String ql_getAll, Supplier<EntityManagerWrapper> entityManagerSupplier) {
     this.e = klass;
+    this.ql_getAll = ql_getAll;
     this.entityManagerSupplier = entityManagerSupplier;
   }
   
@@ -37,17 +41,15 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     }
   }
   
-  /** The QL string for {@link #getAll()} */
-  public abstract String getQlforGetAll();
   /** @apiNote
-    This implementation retrieves using the string provided by {@link #getQlforGetAll()} and
+    This implementation retrieves using the string provided by {@link #ql_getAll} and
     {@linkplain javax.persistence.TypedQuery#getResultStream() stream}
     {@linkplain Stream#collect(Collector) to a}
     {@linkplain Collectors#toSet() set}.
   */
   @Override public java.util.Set<E> getAll() {
     try(EntityManagerWrapper entityManager = entityManagerSupplier.get()) {
-      return entityManager.get().createQuery(getQlforGetAll(), e).getResultStream().collect(Collectors.toSet());
+      return entityManager.get().createQuery(ql_getAll, e).getResultStream().collect(Collectors.toSet());
     }
   }
   
