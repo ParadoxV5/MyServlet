@@ -1,5 +1,8 @@
 package xyz.paradoxv5.hash;
 import java.security.MessageDigest;
+
+import java.util.Scanner;
+
 import java.util.Base64;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -112,5 +115,20 @@ public interface S256B64HashEntry<K> extends HashEntry<K, String, String> {
       BASE64DECODER.decode(getValue()),
       digest(string, getSalt())
     );
+  }
+  
+  /**
+    Print the {@link #hash(String, byte[]) hash data} of using the
+    {@linkplain Scanner#nextLine() next two lines} from {@link System#in}
+    as the {@code string} and {@code salt} respectively.
+    @param __ Command-line arguments (unused)
+  */
+  static void main(String[] __) {
+    try(Scanner scanner = new Scanner(System.in)) {
+      System.out.println(hash(
+        scanner.nextLine(),
+        scanner.nextLine().getBytes(UTF_8)
+      ));
+    }
   }
 }
