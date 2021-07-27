@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -39,6 +40,31 @@ public abstract class AbstractServlet extends HttpServlet implements java.util.E
   protected static void invalidateSession(HttpServletRequest request) {
     HttpSession oldSession = request.getSession(false);
     if(oldSession != null) oldSession.invalidate();
+  }
+  
+  /** Non-{@code null} version of {@link HttpServletRequest#getCookies()} (which returns {@code null} rather than empty arrays)
+    @param request
+      The {@link HttpServletRequest} to query the cookies from
+    @return
+      An array of the {@code request}’s {@link Cookie}s
+  */
+  protected static Cookie[] getCookies(HttpServletRequest request) {
+    Cookie[] cookies = request.getCookies();
+    return cookies == null ? new Cookie[0] : cookies;
+  }
+  /**
+    @param request
+      The {@link HttpServletRequest} to query the {@link Cookie} from
+    @param name 
+      Name of the cookie
+    @return
+      The value of the cookie of the querying name ({@code null} if there’re no cookies of that name)
+  */
+  protected static String getCookie(HttpServletRequest request, String name) {
+    for(Cookie cookie: getCookies(request))
+      if(name.equals(cookie.getName()))
+        return cookie.getValue();
+    return null;
   }
   
   @Override protected abstract void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
