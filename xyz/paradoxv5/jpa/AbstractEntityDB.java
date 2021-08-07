@@ -8,14 +8,14 @@ import java.util.stream.*;
 
 /** The {@code abstract} superclass of a database class (a {@link CRUD}) for an {@link AbstractEntity} type
   @param <E>
-  The type of entity elements the class CRUDs
+    The type of entity elements the class CRUDs
   @param <K>
     The type of the entity’ primary key (“ID”), for {@link #get(Serializable)}
   @apiNote
     This superclass uses {@link EntityManagerWrapper}s (supplied by {@link #emWrapperSupplier} which is
     initialized from {@link #AbstractEntityDB(Class, String, Supplier) the constructor}) to manage transactions
   @version
-    1.1
+    1.11
 */
 public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Serializable> implements CRUD<E, K> {
   /** The persistent constant holding {@code <E>}’s class, as compiling discards type variables */
