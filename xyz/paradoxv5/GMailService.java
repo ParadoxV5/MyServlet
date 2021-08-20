@@ -19,8 +19,8 @@ public class GMailService {
   /** Reüsable properties for GMail connection */
   public static final java.util.Properties PROPERTIES = new java.util.Properties() { private static final long serialVersionUID = 0; {
     setProperty("mail.transport.protocol", "smtps");
-    setProperty("mail.smtp.host", "smtp.gmail.com");
-    setProperty("mail.smtp.port", "465");
+    setProperty("mail.smtps.host", "smtp.gmail.com");
+    setProperty("mail.smtps.port", "465");
     setProperty("mail.smtps.auth", "true");
     setProperty("mail.smtps.quitwait", "false");
   } };
