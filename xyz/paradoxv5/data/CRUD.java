@@ -8,9 +8,9 @@ import java.util.Collection;
 /**
   This is a contract interface identifying that a type supports the CRUD operations:<ul>
     <li>Create: {@link #add(Serializable)}
-    <li>Read: {@link #get(Object)} (and {@link #getAll()} and {@link #getAndRemove(Object)})
+    <li>Read:   {@link #get(Object)} and {@link #getAll()}
     <li>Update: {@link #update(Serializable)}
-    <li>Delete: {@link #remove(Serializable)} (and {@link #getAndRemove(Object)})
+    <li>Delete: {@link #remove(Serializable)}
   </ul>
   This interface is akin to non-{@link Iterable} {@link Collection}s.
   Implementations themselves determine if they’d like to synchronize these access operations.
@@ -31,7 +31,6 @@ public interface CRUD<E extends Serializable, K> {
     @return
       the element of that key
     @see #getAll()
-    @see #getAndRemove(Object)
   */
   public E get(K id) throws Exception;
   /**
@@ -74,27 +73,6 @@ public interface CRUD<E extends Serializable, K> {
       Implementations shall use the ID of the {@code element} parameter to determine the element to remove.
       Implementations optionally may require additional synchronized fields in addition to the ID to match
       in order to ensure synchronization, and optionally may {@code throw} if no matches currently exist.
-    @see
-      #getAndRemove(Object)
   */
   public void remove(E element) throws Exception;
-  
-  /**
-    @param id
-      the ID of the element to get and remove
-    @return
-      the element of that ID, now removed
-    @throws Exception
-      If a checked exception might throw
-    @implSpec
-      See {@link #remove(Serializable)} for Impl.Specs. regarding removing elements
-    @see
-      #get(Object)
-      #remove(Serializable)
-  */
-  public default E getAndRemove(K id) throws Exception {
-    E element = get(id);
-    remove(element);
-    return element;
-  }
 }
