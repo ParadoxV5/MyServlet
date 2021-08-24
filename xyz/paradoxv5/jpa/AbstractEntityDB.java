@@ -36,8 +36,8 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
   }
   
   @Override public synchronized E get(K primaryKey) {
-    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) {
-      return entityManager.get().find(e, primaryKey);
+    try(EntityManagerWrapper emWrapper = emWrapperSupplier.get()) {
+      return emWrapper.get().find(e, primaryKey);
     }
   }
   
@@ -48,8 +48,8 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@linkplain Collectors#toSet() set}.
   */
   @Override public java.util.Set<E> getAll() {
-    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) {
-      return entityManager.get().createQuery(ql_getAll, e).getResultStream().collect(Collectors.toSet());
+    try(EntityManagerWrapper emWrapper = emWrapperSupplier.get()) {
+      return emWrapper.get().createQuery(ql_getAll, e).getResultStream().collect(Collectors.toSet());
     }
   }
   
@@ -65,10 +65,10 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #add0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void add(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
-      add0(entityManager.get(), entity);
+    try(EntityManagerWrapper emWrapper = emWrapperSupplier.get()) { try {
+      add0(emWrapper.get(), entity);
     } catch(Exception e) {
-      entityManager.rollback();
+      emWrapper.rollback();
       throw e;
     } }
   }
@@ -85,10 +85,10 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #update0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void update(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
-      update0(entityManager.get(), entity);
+    try(EntityManagerWrapper emWrapper = emWrapperSupplier.get()) { try {
+      update0(emWrapper.get(), entity);
     } catch(Exception e) {
-      entityManager.rollback();
+      emWrapper.rollback();
       throw e;
     } }
   }
@@ -105,10 +105,11 @@ public abstract class AbstractEntityDB<E extends AbstractEntity<K>, K extends Se
     {@link #remove0(EntityManager, AbstractEntity)} which does the processing part.
   */
   @Override public synchronized void remove(E entity) throws Exception {
-    try(EntityManagerWrapper entityManager = emWrapperSupplier.get()) { try {
-      remove0(entityManager.get(), entity);
+    try(EntityManagerWrapper emWrapper = emWrapperSupplier.get()) { try {
+      EntityManager entityManager = emWrapper.get();
+      remove0(entityManager, entityManager.merge(entity));
     } catch(Exception e) {
-      entityManager.rollback();
+      emWrapper.rollback();
       throw e;
     } }
   }
