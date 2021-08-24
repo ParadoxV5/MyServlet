@@ -137,7 +137,7 @@ public class HTTPException extends RuntimeException implements Comparable<HTTPEx
   /**
     {@linkplain HttpServletResponse#sendError(int, String) Respond an “error”}
     (regardless of {@link #httpCode} category) to the given {@code response};
-    The {@code sc} is (of course) {@link #httpCode} and the {@code msg} is, if any
+    The {@code sc} is (of course) {@link #httpCode} and the {@code msg} is, if any,
     {@link #originalMessage} and the {@link #getCause()}’s
     {@link Throwable#getLocalizedMessage() getLocalizedMessage()} each on their own line.
     
