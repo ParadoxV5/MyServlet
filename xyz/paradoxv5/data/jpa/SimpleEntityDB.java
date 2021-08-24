@@ -1,4 +1,4 @@
-package xyz.paradoxv5.jpa;
+package xyz.paradoxv5.data.jpa;
 import javax.persistence.EntityManager;
 import java.util.function.Supplier;
 /**

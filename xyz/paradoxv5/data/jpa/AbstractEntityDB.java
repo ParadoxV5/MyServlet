@@ -1,7 +1,9 @@
-package xyz.paradoxv5.jpa;
+package xyz.paradoxv5.data.jpa;
 
-import xyz.paradoxv5.CRUD;
 import java.io.Serializable;
+
+import xyz.paradoxv5.data.CRUD;
+
 import java.util.function.Supplier;
 import javax.persistence.EntityManager;
 import java.util.stream.*;

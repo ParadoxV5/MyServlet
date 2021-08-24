@@ -1,4 +1,4 @@
-package xyz.paradoxv5;
+package xyz.paradoxv5.data;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

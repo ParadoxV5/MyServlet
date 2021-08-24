@@ -1,9 +1,9 @@
-package xyz.paradoxv5.jpa;
+package xyz.paradoxv5.data.jpa;
+
+import xyz.paradoxv5.data.CRUD;
 
 import java.util.Objects;
 import java.io.Serializable;
-// Javadoc imports not used by Java code
-import xyz.paradoxv5.CRUD;
 
 /**
   My abstract superclass for an entity of {@linkplain AbstractEntityDB a database}.
