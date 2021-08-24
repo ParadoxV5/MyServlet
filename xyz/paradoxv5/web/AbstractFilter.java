@@ -1,4 +1,4 @@
-package xyz.paradoxv5.servlet;
+package xyz.paradoxv5.web;
 
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;

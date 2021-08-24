@@ -1,4 +1,4 @@
-package xyz.paradoxv5.servlet;
+package xyz.paradoxv5.web;
 
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
